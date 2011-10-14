@@ -6,7 +6,10 @@ class Handler(models.Model):
   # contact and location info can be abstracted into another level as well... but let's just leave it as plain text for now
   contact_info = models.TextField()
   location = models.TextField()
-
+  # to differentiate whether or not a handler is part of head office
+  # system admin is differentiated with their own table of foreign key references
+  head_office = models.BooleanField()
+  
   def __unicode__(self):
     return name
 
@@ -21,7 +24,6 @@ class Group(models.Model):
 
 class GIP(models.Model):
   ''' ground information person (?) '''
-  #tags = models.CharField()
   self_register = models.IntegerField()       # 1 or 0, where 0 is False and 1 is True
     
   # For admin site 
@@ -108,5 +110,9 @@ class HandlersGroups(models.Model):
     ''' TODO Find a better way to format this information '''
     return "This is a Handler-Group relation"
 
+class SystemAdmin(models.Model):
+  handler_ref = models.ForeignKey(Handler)
 
-
+  def __unicode__(self):
+    ''' TODO Find a better way to format this information '''
+    return "This is a System Admin relation"
