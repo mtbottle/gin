@@ -1,5 +1,6 @@
 from django.db import models
 
+# Create your models here.
 class Handler(models.Model):
   ''' class of handler objects '''
   name = models.CharField(max_length=100)
@@ -18,7 +19,7 @@ class Group(models.Model):
   name = models.CharField(max_length=100)
   location = models.TextField()
 
-  def __unicode__(self);
+  def __unicode__(self):
     return name
 
 
@@ -48,7 +49,7 @@ class Message(models.Model):
   # this takes in the time and date it was entered, not really sent. 
   # so the time might be off if messages are in queue waiting to be entered into the database
   datetime_sent = models.DateTimeField(auto_now_add = True)
-  contact_medium = model.ForignKey(ContactMedium)
+  contact_medium = models.ForeignKey(ContactMedium)
   flag = models.IntegerField()                # [unprocessed, accept, reject] 0,1,2 in order
   routing_origin = models.CharField()         # location information   
 
