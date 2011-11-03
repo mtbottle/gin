@@ -51,7 +51,7 @@ class Message(models.Model):
   datetime_sent = models.DateTimeField(auto_now_add = True)
   contact_medium = models.ForeignKey(ContactMedium)
   flag = models.IntegerField()                # [unprocessed, accept, reject] 0,1,2 in order
-  routing_origin = models.CharField()         # location information   
+  routing_origin = models.TextField()         # location information   
 
   def __unicode__(self):
     return message
