@@ -103,8 +103,22 @@ class GroupsTag(models.Model):
 
 ######## Relational Information
 
-class HandlersGroups(models.Model):
+class HandlerFlagMessage(models.Model):
   class Meta:
+    # denotes that this pair is unique, avoids multiple entries in the database
+    unique_together = ['handler_ref', 'message_ref']
+
+  handler_ref = models.ForeignKey(Handler)
+  message_ref = models.ForeignKey(Message)
+
+  def __unicode__(self):
+    ''' TODO Find a better way to format this information '''
+    return "Handler %d belongs to group %s" % (self.handler_ref, self.group_ref)
+
+class HandlersGroups(models.Model):
+  ''' Relation information between handlers and group. '''
+  class Meta:
+    # denotes that this pair is unique, avoids multiple entries in the database
     unique_together = ['handler_ref', 'group_ref']
 
   handler_ref = models.ForeignKey(Handler)
@@ -115,9 +129,9 @@ class HandlersGroups(models.Model):
     return "Handler %d belongs to group %s" % (self.handler_ref, self.group_ref)
 
 class GIPGroups(models.Model):
-  ''' Will problably not need this... Talk about this with group
-      This is made just for addGIP and deleteGIP '''
+  ''' Relation information between GIP and groups '''
   class Meta:
+    # denotes that this pair is unique, avoids multiple entries in the database
     unique_together = ['gip_ref', 'group_ref']
   gip_ref = models.ForeignKey(GIP)
   group_ref = models.ForeignKey(Group)
@@ -127,6 +141,7 @@ class GIPGroups(models.Model):
     return "GIP %d belongs to group %d" % (self.gip_ref, self.group_ref)
 
 class SystemAdmin(models.Model):
+  ''' Specifies which handler is a system admin. There can only be one... per handler '''
   handler_ref = models.OneToOneField(Handler)
 
   def __unicode__(self):
