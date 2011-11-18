@@ -7,7 +7,7 @@ from django.db import transaction
 def get_handler(handler_id):
   ''' Given:  handler_id -      int
       Return handler django object '''
-  return Handler.objects.get(id=handler_id)
+  return Handler.objects.get(id = handler_id)
 
 def delete_gip(gip_id): 
   ''' Given:  gip_id -          int
@@ -16,7 +16,7 @@ def delete_gip(gip_id):
   gip.delete()  
 
 def edit_gip(gip_id, new_data):
-  ''' Do we really need this? GIP only stores registration info right now...
+  ''' Do we really need this? GIP only stores registration info right now... I guess this might be useful when we add more stuff to GIP
 
       Given:  gip_id -          int
               new_data -        dictionary of new values
@@ -32,12 +32,14 @@ def edit_gip(gip_id, new_data):
   # OR return the GIP object to be handled by view.py (not intuitive to me)
   #  return _gip
 
+# GIPS DON't HAVE NAMES!
 #def get_name(gip_id):
 #  ''' Given: gip_id -          int
 #      Return the name (as string) of the gip associated with gip_id '''
 #  gip = GIP.objects.get(id=gip_id)
 #  return gip.name
   
+# HANDLER'S PASSWORDS AREN'T STORED IN DATABASE! WHY DOESN'T THIS PRODUCE ERROR?
 def change_password(handler_id, new_password):
   ''' Given: handler_id -     int
              new_password -   string
@@ -266,3 +268,10 @@ def flag_message(handler_id, message_id):
     flg.handler_ref = handler
     flg.message_ref = message
     flg.save()
+
+def return_handler_flagged_message(handler_id):
+  ''' Given a handler_id, return all message objects that has been flagged by handler as django's queryset object. '''
+  handler = Handler.objects.get(id = handler_id)
+  messages = HandlerFlagMessage.objects.filter(handler_ref = Handler)
+  return messages
+
