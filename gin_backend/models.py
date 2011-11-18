@@ -12,7 +12,8 @@ class Handler(models.Model):
   head_office = models.BooleanField()
   
   def __unicode__(self):
-    return name
+    return "Handler : (name: %s, contact_info: %s, location: %s, head_office: %d)" % \
+      (self.name, self.contact_info, self.location, self.head_office)
 
 class Group(models.Model):
   ''' class of group objects '''
@@ -20,7 +21,7 @@ class Group(models.Model):
   location = models.TextField()
 
   def __unicode__(self):
-    return name
+    return "Group : (name: %s, location: %s)" % (self.name, self.location)
 
 
 class GIP(models.Model):
@@ -29,7 +30,7 @@ class GIP(models.Model):
     
   # For admin site 
   def __unicode__(self):
-    return self.id
+    return "GIP : (id: %d, self register: %d)" % (self.id, self.self_register)
    
 
 class ContactMedium(models.Model):
@@ -40,11 +41,10 @@ class ContactMedium(models.Model):
   preferred_contact = models.IntegerField()   # ranking for how preferred this contact is (1-5 scale?)
 
   def __unicode__(self):
-    return self.t 
+    return "Contact Medium : (gip id: %d, type: %s, description: %s)" % (self.gip, self.t, self.description)
 
 class Message(models.Model):
   ''' Class to store message and the meta-data for messages '''
-  gip = models.ForeignKey(GIP)
   message = models.TextField()
   # this takes in the time and date it was entered, not really sent. 
   # so the time might be off if messages are in queue waiting to be entered into the database
@@ -54,14 +54,14 @@ class Message(models.Model):
   routing_origin = models.TextField()         # location information   
 
   def __unicode__(self):
-    return message
+    return "%s \n" % (self.message)
 
 class Tag(models.Model):
   tag = models.CharField(max_length=100)
   description = models.TextField()
 
   def __unicode__(self):
-    return tag
+    return "Tag : %s, \n%s" % (self.tag, self.description)
 
 
 
@@ -89,7 +89,7 @@ class HandlersTag(models.Model):
 
   def __unicode__(self):
     ''' TODO Find a better way to format this information '''
-    return "This is GIP tag"
+    return "This is handler tag"
  
 class GroupsTag(models.Model):
   grouop_ref = models.ForeignKey(Group)
@@ -97,23 +97,38 @@ class GroupsTag(models.Model):
 
   def __unicode__(self):
     ''' TODO Find a better way to format this information '''
-    return "This is GIP tag"
+    return "This is group tag"
  
 
 
 ######## Relational Information
 
 class HandlersGroups(models.Model):
+  class Meta:
+    unique_together = ['handler_ref', 'group_ref']
+
   handler_ref = models.ForeignKey(Handler)
   group_ref = models.ForeignKey(Group)
 
   def __unicode__(self):
     ''' TODO Find a better way to format this information '''
-    return "This is a Handler-Group relation"
+    return "Handler %d belongs to group %s" % (self.handler_ref, self.group_ref)
 
-class SystemAdmin(models.Model):
-  handler_ref = models.ForeignKey(Handler)
+class GIPGroups(models.Model):
+  ''' Will problably not need this... Talk about this with group
+      This is made just for addGIP and deleteGIP '''
+  class Meta:
+    unique_together = ['gip_ref', 'group_ref']
+  gip_ref = models.ForeignKey(GIP)
+  group_ref = models.ForeignKey(Group)
 
   def __unicode__(self):
     ''' TODO Find a better way to format this information '''
-    return "This is a System Admin relation"
+    return "GIP %d belongs to group %d" % (self.gip_ref, self.group_ref)
+
+class SystemAdmin(models.Model):
+  handler_ref = models.OneToOneField(Handler)
+
+  def __unicode__(self):
+    ''' TODO Find a better way to format this information '''
+    return "Handler %d is a system admin" % (self.handler_ref_id)
