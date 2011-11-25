@@ -1,4 +1,15 @@
 from django.db import models
+from django.utils.hashcompat import md5_constructor
+
+def encode_password(salt, raw_password):
+  ''' Encode the password with md5 encoding. similar to get_hexdigest in django/trunk/django/contrib/auth/models.py'''
+  return md5_constructor(salt + raw_password).hexdigest()
+
+def check_password(raw_password, hash_password):
+  ''' Return true if the raw_password is the same as hash_password. similar to check_password in django/trunk/django/contrib/auth/models.py '''
+  algo, salt, hsh = hash_password.split('$')
+  assert(algo == 'md5')
+  return hsh == get_hexdigest(salt, raw_password)
 
 # Create your models here.
 class Handler(models.Model):
@@ -10,6 +21,7 @@ class Handler(models.Model):
   # to differentiate whether or not a handler is part of head office
   # system admin is differentiated with their own table of foreign key references
   head_office = models.BooleanField()
+  password = models.TextField()
   
   def __unicode__(self):
     return "Handler : (name: %s, contact_info: %s, location: %s, head_office: %d)" % \
@@ -23,7 +35,6 @@ class Group(models.Model):
   def __unicode__(self):
     return "Group : (name: %s, location: %s)" % (self.name, self.location)
 
-
 class GIP(models.Model):
   ''' ground information person (?) '''
   self_register = models.IntegerField()       # 1 or 0, where 0 is False and 1 is True
@@ -31,7 +42,6 @@ class GIP(models.Model):
   # For admin site 
   def __unicode__(self):
     return "GIP : (id: %d, self register: %d)" % (self.id, self.self_register)
-   
 
 class ContactMedium(models.Model):
   ''' Information stored for contact mediums '''

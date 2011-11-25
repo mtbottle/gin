@@ -31,21 +31,13 @@ def edit_gip(gip_id, new_data):
 
   # OR return the GIP object to be handled by view.py (not intuitive to me)
   #  return _gip
-
-# GIPS DON't HAVE NAMES!
-#def get_name(gip_id):
-#  ''' Given: gip_id -          int
-#      Return the name (as string) of the gip associated with gip_id '''
-#  gip = GIP.objects.get(id=gip_id)
-#  return gip.name
   
-# HANDLER'S PASSWORDS AREN'T STORED IN DATABASE! WHY DOESN'T THIS PRODUCE ERROR?
 def change_password(handler_id, new_password):
   ''' Given: handler_id -     int
              new_password -   string
       Return the handler object with the password changed '''
   handler = Handler.objects.get(id = handler_id)
-  handler.password = new_password
+  handler.password = encode_password(new_password)
   handler.save()
   return handler
   
