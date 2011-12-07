@@ -1,0 +1,143 @@
+<html>
+<body>
+
+<ul class="tabs"  data-tabs="tabs" >
+  <li class="active">
+    <a href="#Manage Gips">Manage Gips</a>
+  </li>
+</ul>
+<div class="pill-content" align="center">
+<br />
+<br />
+  <div class="active" id="Manage Gips" style="width:700px;" align="center">
+  <div class="pull-left">
+  <div style="width:255px;" align="left" class="special_select_top" sort-target="gip_select"><div style="padding:3px;font-size:medium;"><a href="#"  style="color:White;">All Gips&nbsp;</a><a href="#" data-controls-modal="new_gips" data-backdrop="static" style="color:White; text-decoration:none;"><span class="pull-right"><img src="http://www.ravenchen.com/project/images/file_new.png" title="Create new" style="height:20px;"/></span></a></div></div>
+   <select class="special_select"  id="gip_select" style="width:255px; height:255px;" size="15" onchange="return test_modification('GIP_MODIFICATION',this);" pre_select="0">
+                <option selected="selected" value="Gip1">Gip1</option>
+                <option value="Group2">Gip2</option>
+                <option value="Gip3">Gip3</option>
+                <option value="Gip4">Gip4</option>
+                <option value="Gip5">Gip5</option>
+                  <option value="Gip11">Gip1</option>
+                <option value="Gip21">Gip2</option>
+                <option value="Gip31">Gip3</option>
+                <option value="Gip41">Gip4</option>
+                <option value="Gip51">Gip5</option>
+                  <option value="Gip12">Gip1</option>
+                <option value="Gip22">Gip2</option>
+                <option value="Gip32">Gip3</option>
+                <option value="Gip42">Gip4</option>
+                <option value="Gip52">Gip5</option>
+              </select>
+  </div>
+    <form id="GIP_MODIFICATION">
+  <div class="pull-right">
+   <div style="width:355px;padding:3px;" align="left" class="special_select_top">232232</div>
+   <div style="width:344px;border:1px solid #ccc;padding-left:15px;" align="left" class="special_select">
+   <br />
+   Location:<br />
+   <input type="text"  class="xlarge" name="xlInput" value="Toronto" style="color:#666;"/><br /><br />
+   Phone number:<span>&nbsp;&nbsp;<a href=""><img src="http://www.ravenchen.com/project/images/dropdown.png" title="" style="height:13px;width:10px;position:relative;bottom:-3px;" onclick="switch_phone_area('#additional_phone_numbers',this);return false;" /></a></span><br />
+   <input type="text"  class="xlarge" name="xlInput" value="1234567" style="color:#666;margin-bottom:5px;"/> (Primary)<br />
+   <div style="display:none;" id="additional_phone_numbers">
+   <input type="text"  class="xlarge" name="xlInput" value="thisis@value.com"  style="color:#666;margin-bottom:5px;"/>(Optional)<br />
+   <input type="text"  class="xlarge" name="xlInput" value="thisis@value.com"  style="color:#666;margin-bottom:5px;"/>(Optional)<br />
+   </div><br />
+   Email: <br />
+   <input type="text"  class="xlarge" name="xlInput" value="thisis@value.com"  style="color:#666;margin-bottom:5px;"/><br /><br />
+     Groups:<br />
+  <select submit_status="no_submit" >
+  <option option="abc" >abc</option>
+  <option option="abc" >abc</option>
+  <option option="abc" >abc</option>
+  </select>
+  <br />
+  <a href="#" data-controls-modal="gip_group_modification"  data-backdrop="static"  style="margin-left:180px;">Add/Delete group</a><br />
+  <button class="btn info" style="margin:6px;" name="submit_btn" disabled="disabled" onclick="this.disabled='disabled'">Save</button> <button class="btn" style="margin:6px;">Cancel</button>
+   </div>
+  </div>
+  </form>
+  </div>
+  </div>
+  <div id="gip_group_modification" class="modal hide fade minHeight" style="width:700px;">
+  <div  class="modal-header">
+   <a href="#" class="close">&times;</a>
+       <h3>332343 Group management</h3>
+  </div>
+  <div class="modal-body" style=" vertical-align:top; margin-left:30px;">
+  <div style=" display:inline-table;" >
+  <div style="width:255px;" align="left" class="special_select_top" sort-target="all_groups_">
+  <div style="padding:3px;font-size:medium;"  ><a href="#" style="color:White;">All groups</a></div>  </div>
+   <select class="special_select"  id="all_groups_" multiple="multiple" style="width:255px;" size="15">
+                <option value="Group1">Group1</option>
+                <option value="Group2">Group2</option>
+                <option value="Group3">Group3</option>
+                <option value="Group4">Group4</option>
+                <option value="Group5">Group5</option>
+                  <option value="Group11">Group11</option>
+                <option value="Group21">Group21</option>
+                <option value="Group31">Group31</option>
+                <option value="Group41">Group41</option>
+                <option value="Group51">Group51</option>
+                  <option value="Group12">Group12</option>
+                <option value="Group22">Group22</option>
+                <option value="Group32">Group32</option>
+                <option value="Group42">Group42</option>
+                <option value="Group52">Group52</option>
+              </select>
+
+              </div>
+              <div style="display:inline-table;">
+              <div style="position:relative;bottom:120px;margin:5px;">
+              <button class="btn success" onclick="move('#all_groups_','#current_groups_')">Include =></button>
+              </div>
+              </div>
+                <div  style="display:inline-table;">
+                 <div style="width:255px;" align="left" class="special_select_top" sort-target-ul="current_groups_">
+  <div style="padding:3px;font-size:medium;"><a href="#"  style="color:White;">Current groups</a></div>  </div>
+   <ul class="special_select multipleUlBox"  id="current_groups_" style="width:253px;">
+                <li title="Group1"><font>Group1</font></li>
+                <li title="Group2"><font>Group2</font></li>
+              </ul>
+              </div>
+               <div align="right" style="padding-right:55px;"><span class="label notice" >Notice</span>&nbsp;Click garbage icon to delete it.</div>
+
+
+
+  </div>
+  <div class="modal-footer">
+  <button class="btn" style="margin:6px;">Cancel</button><button class="btn info" style="margin:6px;" onclick="alert(return_ul_options('current_groups_'));">Save</button>
+  </div>
+  </div>
+
+
+
+       <div id="new_gips" class="modal hide fade minHeight">
+     <div class="modal-header">
+     <a href="#" class="close">&times;</a>
+       <h3>Add New GIP</h3>
+     </div>
+          <div class="modal-body">
+
+           Location:<br />
+   <input type="text"  class="xlarge" name="xlInput" value="Toronto" style="color:#666;"/><br /><br />
+   Contact:<br />
+   <input type="text"  class="xlarge" name="xlInput" value="1234567" style="color:#666;margin-bottom:5px;"/> (Primary)<br />
+   <input type="text"  class="xlarge" name="xlInput" value="thisis@value.com" style="color:#666;"/><br /><br />
+   Groups:<br />
+  <select>
+  <option value=""> </option>
+  <option option="abc">abc</option>
+  <option option="abc">abc</option>
+  <option option="abc">abc</option>
+  </select>
+  <br />
+ 
+
+     </div>
+      <div class="modal-footer">
+       <button class="btn" style="margin:6px;">Cancel</button><button class="btn info" style="margin:6px;">Save</button>
+      </div>
+      </div>
+</body>
+</html>
