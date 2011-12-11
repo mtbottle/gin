@@ -9,7 +9,7 @@ urlpatterns = patterns('',
     (r'^gin/message','gin.gin_backend.views.message'),
     (r'^gin/handlers','gin.gin_backend.views.message'),
     (r'^gin/gips','gin.gin_backend.views.message'),
-    (r'^gin/groups','gin.gin_backend.views.message'),
+    (r'^gin/groups','gin.gin_backend.views.post_groups'),
     (r'^gin/main','gin.gin_backend.views.index'),
     (r'^gin/', 'gin.gin_backend.views.index'),
 
