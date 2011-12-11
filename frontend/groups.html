@@ -2,124 +2,131 @@
 <body>
 
 <ul class="tabs"  data-tabs="tabs" >
-  <li class="active">
-    <a href="#Manage Groups">Manage Groups</a>
-  </li>
+	<li class="active"> 
+		<a href="#{{page_id}}"> {{page_id}} </a>
+	</li>
 </ul>
+
+
 <div class="pill-content" align="center">
 <br />
 <br />
 
- <div class="active" id="Manage Groups" style="width:700px;" align="center">
-  <div class="pull-left">
-  <div style="width:255px;" align="left" class="special_select_top"  sort-target="all_group2_">
-  <div style="padding:3px;font-size:medium;"><a href="#"  style="color:White;">All groups</a>&nbsp;<a href="#" data-controls-modal="new_groups" data-backdrop="static" style="color:White; text-decoration:none;"><span class="pull-right"><img src="images/file_new.png" title="Create new" style="height:20px;"/></span></a></div></div>
-   <select  class="special_select"  id="all_group2_"  style="width:255px;height:255px;" size="15" onchange="return test_modification('GROUP_MODIFICATION',this);" pre_select="0">
-               <option value="Group1" selected="selected">Group1</option>
-                <option value="Group2">Group2</option>
-                <option value="Group3">Group3</option>
-                <option value="Group4">Group4</option>
-                <option value="Group5">Group5</option>
-                  <option value="Group1s">Group1</option>
-                <option value="Group2s">Group2</option>
-                <option value="Group3s">Group3</option>
-                <option value="Group4s">Group4</option>
-                <option value="Group5s">Group5</option>
-                  <option value="Group1a">Group1</option>
-                <option value="Group2a">Group2</option>
-                <option value="Group3a">Group3</option>
-                <option value="Group4a">Group4</option>
-                <option value="Group5a">Group5</option>
-              </select>
-  </div>
-  <form id="GROUP_MODIFICATION">
-  <div class="pull-right">
-   <div style="width:355px;padding:3px;font-size:medium;" align="left" class="special_select_top">Group1</div>
-   <div style="width:344px;border:1px solid #ccc;padding-left:15px;" align="left" class="special_select">
-   <br />
-   Name:<br />
-   <input type="text"  class="xlarge" name="xlInput" value="Vincent" style="color:#666;"/><br /><br />
-   Location:<br />
-   <input type="text"  class="xlarge" name="xlInput" value="Toronto" style="color:#666;margin-bottom:5px;"/><br /><br />
-   Description:<br />
-  <textarea  cols="10" rows="5"  style="width:80%;">Description</textarea><br />
-  <a href="#" data-controls-modal="group_gip_modification"  data-backdrop="static"  style="margin-left:180px;">Add/Delete members</a><br />
-  <button class="btn info" style="margin:6px;" name="submit_btn" disabled="disabled" onclick="this.disabled='disabled'">Save</button> <button class="btn" style="margin:6px;">Cancel</button>
-   </div>
-  </div>
-  </form>
- </div>  
- </div>
- 
-    <div id="new_groups" class="modal hide fade minHeight">
-     <div class="modal-header">
-     <a href="#" class="close">&times;</a>
-       <h3>Add New Group</h3>
-     </div>
-          <div class="modal-body">
- Name:<br />
-   <input type="text"  class="xlarge" name="xlInput" value="Vincent" style="color:#666;"/><br /><br />
-   Location:<br />
-   <input type="text"  class="xlarge" name="xlInput" value="Toronto" style="color:#666;margin-bottom:5px;"/><br /><br />
-   Description:<br />
-  <textarea  cols="10" style="width:80%;" rows="5">Description</textarea><br />
-  <br />
-     </div>
-      <div class="modal-footer">
-       <button class="btn" style="margin:6px;">Cancel</button><button class="btn info" style="margin:6px;">Save</button>
-      </div>
-      </div>
-          
+<div class="active" id="{{page_id}}" style="width:700px;" align="center">
+	<div class="pull-left">
+	<div style="width:255px;" align="left" class="special_select_top"  sort-target="all_group2_">
+	<div style="padding:3px;font-size:medium;">
+		<a href="#"  style="color:White;"> All groups </a>&nbsp;
+		<a href="#" data-controls-modal="new_groups" data-backdrop="static" style="color:White; text-decoration:none;">
+			<span class="pull-right">
+				<img src="images/file_new.png" title="Create new" style="height:20px;"/>
+			</span>
+		</a>
+	</div>
+	</div>
 
-    <div id="group_gip_modification" class="modal hide fade minHeight" style="width:700px;">
-  <div  class="modal-header">
-   <a href="#" class="close">&times;</a>
-       <h3>Group1 Member management</h3>
-  </div>
-  <div class="modal-body" style=" vertical-align:top;margin-left:30px;">
-  <div style=" display:inline-table;" >
-  <div style="width:255px;" align="left" class="special_select_top"  sort-target="all_gips2_">
-  <div style="padding:3px;font-size:medium;"><a href="#"  style="color:White;">All Gips</a></div>  </div>
-   <select class="special_select"  id="all_gips2_" multiple="multiple" style="width:255px;" size="15">
-                <option value="Gip1">Gip1</option>
-                <option value="Gip2">Gip2</option>
-                <option value="Gip3">Gip3</option>
-                <option value="Gip4">Gip4</option>
-                <option value="Gip5">Gip5</option>
-                  <option value="Gip6">Gip6</option>
-                <option value="Gip7">Gip7</option>
-                <option value="Gip8">Gip8</option>
-                <option value="Gip9">Gip9</option>
-                <option value="Gip10">Gip10</option>
-                  <option value="Gip11">Gip11</option>
-                <option value="Gip12">Gip22</option>
-                <option value="Gip13">Gip33</option>
-                <option value="Gip14">Gip44</option>
-                <option value="Gip15">Gip55</option>
-              </select>
+	<select  class="special_select"  id="all_group2_"  style="width:255px;height:255px;" size="15" onchange="return test_modification('GROUP_MODIFICATION',this);" pre_select="0">
+		{% for group in groups %}
+			<option value="{{ group.name }}">{{ group.name }}</option>
+		{% endfor %}
+	</select>
 
-              </div>
-              <div style="display:inline-table;">
-              <div style="position:relative;bottom:120px;margin:5px;">
-              <button class="btn success" onclick="move('#all_gips2_','#gips_in_group2_')">Include =></button>
-              </div>
-              </div>
-                <div  style="display:inline-table;">
-                 <div style="width:255px;" align="left" class="special_select_top"   sort-target="gips_in_group2_">
-  <div style="padding:3px;font-size:medium;"><a href="#"  style="color:White;">Gips in Group1</a></div>  </div>
-   <ul class="special_select  multipleUlBox"  id="gips_in_group2_"  style="width:253px;">
-                <li title="Gip1" >Gip1</li>
-                <li title="Gip2" >Gip2</li>
-              </ul>
-              </div>
-               <div align="right" style="padding-right:55px;"><span class="label notice" >Notice</span>&nbsp;Click garbage icon to delete it.</div>
+	</div>
+
+<!-- Form to modify the group information -->
+	<form id="GROUP_MODIFICATION">
+		<div class="pull-right">
+			<div style="width:355px;padding:3px;font-size:medium;" align="left" class="special_select_top"> Group1 </div>
+			<div style="width:344px;border:1px solid #ccc;padding-left:15px;" align="left" class="special_select"> 
+			<br /> Name: <br />
+
+			<input type="text"  class="xlarge" name="xlInput" value="Vincent" style="color:#666;"/><br /><br /> Location: <br />
+
+			<input type="text"  class="xlarge" name="xlInput" value="Toronto" style="color:#666;margin-bottom:5px;"/><br /><br />
+			Description:<br />
+	
+			<textarea  cols="10" rows="5"  style="width:80%;">Description</textarea><br />
+			<a href="#" data-controls-modal="group_gip_modification"  data-backdrop="static"  style="margin-left:180px;"> Add/Delete members </a> <br />
+	
+			<button class="btn info" style="margin:6px;" name="submit_btn" disabled="disabled" onclick="this.disabled='disabled'"> Save </button> 
+			<button class="btn" style="margin:6px;"> Cancel </button>
+			</div>
+		</div>
+	</form>
+
+</div>  
+</div>
+
+<!-- Something about new groups here?  -->
+<div id="new_groups" class="modal hide fade minHeight">
+	<div class="modal-header">
+		<a href="#" class="close">&times;</a>
+		<h3>Add New Group</h3>
+	</div>
+	<div class="modal-body"> 
+		Name: <br /> 			<input type="text"  class="xlarge" name="xlInput" value="Vincent" style="color:#666;"/> <br /><br /> 
+		Location:<br />			<input type="text"  class="xlarge" name="xlInput" value="Toronto" style="color:#666;margin-bottom:5px;"/><br /><br /> 
+		Description:<br /> 		<textarea  cols="10" style="width:80%;" rows="5"> Description </textarea> <br /><br />
+	</div>
+	<div class="modal-footer">
+		<button class="btn" style="margin:6px;">Cancel</button><button class="btn info" style="margin:6px;">Save</button>
+	</div>
+</div>
 
 
+<!--  -->
+<div id="group_gip_modification" class="modal hide fade minHeight" style="width:700px;">
+	<div  class="modal-header">
+		<a href="#" class="close">&times;</a>
+		<h3>Group1 Member management</h3>
+	</div>
 
-  </div>
-  <div class="modal-footer">
-  <button class="btn" style="margin:6px;">Cancel</button><button class="btn info" style="margin:6px;"  onclick="alert(return_ul_options('gips_in_group2_'));">Save</button>
-  </div>
-  </div>
+	<div class="modal-body" style=" vertical-align:top;margin-left:30px;">
+		<div style=" display:inline-table;" >
+			<div style="width:255px;" align="left" class="special_select_top"  sort-target="all_gips2_">
+			<div style="padding:3px;font-size:medium;">
+				<a href="#"  style="color:White;"> All Gips </a>
+			</div>
+			</div>
+
+		<select class="special_select"  id="all_gips2_" multiple="multiple" style="width:255px;" size="15">
+			{% for gip in gips %}
+				<option value="{{ gip.id }}">{{ gip.id }}</option>
+			{% endfor %}
+		</select>
+
+	</div>
+
+	<div style="display:inline-table;">
+		<div style="position:relative;bottom:120px;margin:5px;">
+			<button class="btn success" onclick="move('#all_gips2_','#gips_in_group2_')"> Include => </button>
+		</div>
+	</div>
+
+	<div  style="display:inline-table;">
+		<div style="width:255px;" align="left" class="special_select_top"   sort-target="gips_in_group2_">
+			<div style="padding:3px;font-size:medium;">
+				<a href="#"  style="color:White;"> Gips in Group1 </a>
+			</div>
+		</div>
+
+		<ul class="special_select  multipleUlBox"  id="gips_in_group2_"  style="width:253px;">
+			<li title="Gip1" >Gip1</li>
+			<li title="Gip2" >Gip2</li>
+		</ul>
+
+	</div>
+
+	<div align="right" style="padding-right:55px;"><span class="label notice" >Notice</span>&nbsp;Click garbage icon to delete it.</div>
+
+
+</div>
+
+<div class="modal-footer">
+	<button class="btn" style="margin:6px;"> Cancel </button>
+	<button class="btn info" style="margin:6px;"  onclick="alert(return_ul_options('gips_in_group2_'));"> Save </button>
+</div>
+
+</div>
 </body>
 </html>
