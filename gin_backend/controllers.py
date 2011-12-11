@@ -266,3 +266,75 @@ def return_handler_flagged_message(handler_id):
 	messages = HandlerFlagMessage.objects.filter(handler_ref = Handler)
 	return messages
 
+# Message and tag related functions
+
+def edit_entry(entry, new_data):
+	''' Edit general object details. Elements of the object to be updated are passed as a hash keyed by element name. '''
+	for update in new_data:
+		entry.__dict__[update] = new_data[update]
+	entry.save()
+
+def add_message(gip, contact_medium, routing_origin, message):
+	''' Create a message entry associated with a given GIP and contact medium '''
+
+	m = Message(gip=gip, message=message, datetime_sent=datetime.datetime.now(), contact_medium=contact_medium, flag=0, routing_origin=routing_origin)
+	m.save()
+	return m
+
+def delete_message(message):
+	''' Delete a message given a reference to the messase object '''
+	message.delete()
+
+
+def add_tag(tag, description):
+	''' Add a tag with description '''
+	t = Tag(tag=r['tag'], description=r['description'])
+	t.save()
+	return t
+
+def delete_tag(tag):
+	''' Delete tag given reference to the object '''
+	tag.delete()
+
+def add_contact_medium(contact_type, description, gip, preferred_contact):
+	''' Add a contact medium, associated with a given gip '''
+	c = ContactMedium(contact_type, description, gip, preferred_contact)
+	c.save()
+	return c
+
+def change_gip_for_contact_medium(contact_medium, gip):
+	''' Change the GIP associated with a contact_medium '''
+	contact_medium.gip_ref = gip
+	contact_medium.save()
+
+def delete_contact_medium(contact_medium):
+	''' Delete contact medium entry '''
+	contact_medium.delete()
+
+def add_message_tag(Message, tag):
+	''' Add a reference to a tag for a message '''
+	r = MessageTag(Message, tag)
+	r.save()
+	return r
+
+def delete_message_tag(Message, tag):
+	''' Delete a reference to a tag for a message '''
+	MessageTag.objects.get(message_ref=Message, tag_ref=tag).delete()
+
+def get_all_messages_for_tag(tag):
+	''' Return a list of message objects for a given tag '''
+	messageTags = MessageTag.objects.filter(tag_ref=tag)
+	messages = []
+	for ref in messageTags:
+		messages.append(ref.message_ref)
+
+	return messages
+
+def get_tags_for_message(message):
+	''' Return a list of tags for a given message '''
+	messageTags = MessageTag.objects.filter(message_ref=message)
+	tags = []
+	for ref in messageTags:
+		tags.append(ref.tag_ref)
+  
+	return tags
