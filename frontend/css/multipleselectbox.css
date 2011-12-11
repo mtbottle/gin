@@ -1,0 +1,96 @@
+.MultipleSelectBox {
+	border: 1px solid #ccc;
+	height: 200px;
+	list-style-type: none;
+	margin: 0;
+	overflow: auto;
+	padding: 1px 0;
+	height:250px;
+	/* corner */
+	-moz-border-radius:0px 0px 5px 5px;
+	-khtml-border-radius: 0px 0px 5px 5px;
+	-webkit-border-radius: 0px 0px 5px 5px;
+	border-radius: 0px 0px 5px 5px;
+
+}
+
+.MultipleSelectBox.selecting {
+	/*border: 1px solid black;*/
+}
+
+.MultipleSelectBox li {
+	border: 1px solid white;
+	cursor: pointer;
+	padding: 0 3px;
+}
+
+.MultipleSelectBox li.disabled {
+	color: gray;
+	font-style: italic;
+}
+.MultipleSelectBox_li_over
+{
+    /* IE10 */ 
+background-image: -ms-linear-gradient(top left, #E0E0E0 0%, #E0E0E0 100%);
+
+/* Mozilla Firefox */ 
+background-image: -moz-linear-gradient(top left, #E0E0E0 0%, #E0E0E0 100%);
+
+/* Opera */ 
+background-image: -o-linear-gradient(top left, #E0E0E0 0%, #E0E0E0 100%);
+
+/* Webkit (Safari/Chrome 10) */ 
+background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #E0E0E0), color-stop(1, #E0E0E0));
+
+/* Webkit (Chrome 11+) */ 
+background-image: -webkit-linear-gradient(top left, #E0E0E0 0%, #E0E0E0 100%);
+
+/* Proposed W3C Markup */ 
+background-image: linear-gradient(top left, #E0E0E0 0%, #E0E0E0 100%);
+}
+
+
+.MultipleSelectBox li.optgroup {
+	font-style: italic;
+	font-weight: bold;
+}
+
+.MultipleSelectBox li.selected {
+	border: 1px solid #F39814;
+	background-color: #F39814;
+}
+
+.MultipleSelectBox li.selecting {
+	border: 1px dotted black;
+}
+
+.MultipleSelectBox.vertical li.optgroupitem {
+	margin-left: 30px;
+}
+
+/* horizontal mode */
+.MultipleSelectBox.horizontal {
+	height: auto;
+	white-space: nowrap;
+}
+
+.MultipleSelectBox.horizontal li {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.MultipleSelectBox.horizontal li.optgroup {
+	margin-bottom: 10px;
+}
+
+/* Ultimate CSS Gradient Generator */
+.MultipleSelectBox li.selected {
+	background: #ffa84c;
+	background: -moz-linear-gradient(top, #ffa84c 0%, #ff7b0d 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffa84c), color-stop(100%,#ff7b0d));
+	background: -webkit-linear-gradient(top, #ffa84c 0%,#ff7b0d 100%);
+	background: -o-linear-gradient(top, #ffa84c 0%,#ff7b0d 100%);
+	background: -ms-linear-gradient(top, #ffa84c 0%,#ff7b0d 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffa84c', endColorstr='#ff7b0d',GradientType=0 );
+	background: linear-gradient(top, #ffa84c 0%,#ff7b0d 100%);
+}
