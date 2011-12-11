@@ -120,6 +120,7 @@ class HandlerFlagMessage(models.Model):
 
 	handler_ref = models.ForeignKey(Handler)
 	message_ref = models.ForeignKey(Message)
+	priority = models.IntegerField()
 
 	def __unicode__(self):
 		''' TODO Find a better way to format this information '''
