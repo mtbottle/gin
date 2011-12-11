@@ -274,51 +274,61 @@ def edit_entry(entry, new_data):
 		entry.__dict__[update] = new_data[update]
 	entry.save()
 
-def add_message(gip, contact_medium, routing_origin, message):
+def add_message(gip_id, contact_medium_id, routing_origin, message):
 	''' Create a message entry associated with a given GIP and contact medium '''
-
-	m = Message(gip=gip, message=message, datetime_sent=datetime.datetime.now(), contact_medium=contact_medium, flag=0, routing_origin=routing_origin)
+	_gip = GIP.objects.get(id = gip_id)
+	_contact_medium = ContactMedium.objects.get(id = contact_medium_id)
+	m = Message(gip=_gip, message=message, datetime_sent=datetime.datetime.now(), contact_medium=_contact_medium, flag=0, routing_origin=routing_origin)
 	m.save()
-	return m
 
-def delete_message(message):
+
+def delete_message(message_id):
 	''' Delete a message given a reference to the messase object '''
-	message.delete()
+	Message.objects.get(id = message_id).delete()
 
 
-def add_tag(tag, description):
+def add_tag(_tag, _description):
 	''' Add a tag with description '''
-	t = Tag(tag=r['tag'], description=r['description'])
+	t = Tag(tag=_tag, description=_description)
 	t.save()
-	return t
 
-def delete_tag(tag):
+
+def delete_tag(tag_id):
 	''' Delete tag given reference to the object '''
-	tag.delete()
+	Tag.objects.get(id = tag_id).delete()
 
-def add_contact_medium(contact_type, description, gip, preferred_contact):
+def add_contact_medium(contact_type, description, gip_id, preferred_contact):
 	''' Add a contact medium, associated with a given gip '''
-	c = ContactMedium(contact_type, description, gip, preferred_contact)
+	_gip = GIP.objects.get(id = gip_id)
+	c = ContactMedium(contact_type, description, _gip, preferred_contact)
 	c.save()
-	return c
 
-def change_gip_for_contact_medium(contact_medium, gip):
+
+def change_gip_for_contact_medium(contact_medium_id, gip_id):
 	''' Change the GIP associated with a contact_medium '''
+	gip = GIP.objects.get(id = gip_id)
+	contact_medium = ContactMedium.objects.get(id = contact_medium_id)
 	contact_medium.gip_ref = gip
 	contact_medium.save()
 
-def delete_contact_medium(contact_medium):
+def delete_contact_medium(contact_medium_id):
 	''' Delete contact medium entry '''
-	contact_medium.delete()
+	ContactMedium.objects.get(id = contact_medium_id).delete()
 
-def add_message_tag(Message, tag):
+
+def add_message_tag(message_id, tag_id):
 	''' Add a reference to a tag for a message '''
-	r = MessageTag(Message, tag)
+	message = Message.objects.get(id = message_id)
+	tag = Tag.objects.get(id = tag_id)
+	r = MessageTag(message, tag)
 	r.save()
 	return r
 
-def delete_message_tag(Message, tag):
+def delete_message_tag(message_id, tag_id):
 	''' Delete a reference to a tag for a message '''
+	message = Message.objects.get(id = message_id)
+	tag = Tag.objects.get(id = tag_id)
+
 	MessageTag.objects.get(message_ref=Message, tag_ref=tag).delete()
 
 def get_all_messages_for_tag(tag):
@@ -330,8 +340,10 @@ def get_all_messages_for_tag(tag):
 
 	return messages
 
-def get_tags_for_message(message):
+def get_tags_for_message(message_id):
 	''' Return a list of tags for a given message '''
+	message = Message.objects.get(id = message_id)
+
 	messageTags = MessageTag.objects.filter(message_ref=message)
 	tags = []
 	for ref in messageTags:
