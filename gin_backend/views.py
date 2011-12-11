@@ -3,7 +3,10 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.template import RequestContext, Context, loader
 from django.shortcuts import render_to_response, get_object_or_404
+
+# json parsing
 from django.core import serializers
+import json
 
 # import the models
 from models import *
@@ -28,9 +31,32 @@ def post_add_new_group(request):
 		return HttpResponse(json.dumps(error), mimetype = 'application/json', status = 400)
 
 	# create the database object and return id
-	group_id = create_group(name, location, description)
+	group_id = controllers.create_group(name, location, description)
 	response = {'id': group_id}
 	return HttpResponse(json.dumps(response), mimetype = 'application/json', status = 200)
+
+def get_all_gips_in_group(request):
+	''' Given a post with the group_id structured as : {'group_id': __}
+		Return as response of all the gips in the group in json format. '''
+	try:
+		group_id = int( request.REQUEST['group_id'] )
+
+	# if any of the request items are missing, return HttpResponse of error
+	except KeyError as e:
+		error = {'msg': 'Missing parameters: %s' % e.message}
+		return HttpResponse(json.dumps(error), mimetype = 'application/json', status = 400)
+
+	# get QuerySet of all the database objects
+	gips = controllers.get_all_gips_from_group(group_id)
+	json_data = serializers.serialize('json', gips)
+	return HttpResponse(json_data, mimetype = 'application/json', status = 200)
+
+def get_all_groups(request):
+	''' Does not take in a request(?). Return a request with all the groups in json format '''
+	# get QuerySet of all groups
+	groups = controllers.get_all_groups()
+	json_data = serializers.serialize('json', groups)
+	return HttpResponse(json_data, mimetype = 'application/json', status = 200)
 
 #def get_all_groups(request):
 #	''' Return Http request of json with all groups data. '''
