@@ -1,130 +1,193 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Bootstrap, from Twitter</title>
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-     <script language="javascript" type="text/javascript" src="global.js"></script>
-    <!-- Le styles -->
+<head>
+	<meta charset="utf-8">
+	<title>Bootstrap, from Twitter</title>
+	<meta name="description" content="">
+	<meta name="author" content="VV">
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<script language="javascript" type="text/javascript" src="http://www.ravenchen.com/project/js/global.js"></script>
 
-    <script language="javascript" type="text/javascript">
-        load_javascript_file("js/main.js");
+	<!-- Le styles -->
+	<script language="javascript" type="text/javascript">
+		load_javascript_file("project/js/main.js");
+		load_css_file("project/bootstrap.css");
+		load_css_file("project/multipleselectbox.css");
+	</script>
 
-        load_css_file("css/bootstrap.css");
-        load_css_file("css/multipleselectbox.css");
-    </script>
-    <link href="http://twitter.github.com/bootstrap/assets/js/google-code-prettify/prettify.css" rel="stylesheet">
-         <script src="http://twitter.github.com/bootstrap/assets/js/google-code-prettify/prettify.js"></script>
-               <script src="http://code.jquery.com/jquery-1.5.2.min.js" type="text/javascript"></script>
-    <script src="http://autobahn.tablesorter.com/jquery.tablesorter.js" type="text/javascript"></script>
-    <script src="js/jquery.multipleselectbox.js" type="text/javascript"></script>
-    <script type="text/javascript" src="js/selectboxes.js"></script>
-            <script>
-           </script>
-    <script src="http://twitter.github.com/bootstrap/1.4.0/bootstrap-modal.js"></script>
-    <script src="http://twitter.github.com/bootstrap/1.4.0/bootstrap-alerts.js"></script>
-    <script src="http://twitter.github.com/bootstrap/1.4.0/bootstrap-twipsy.js"></script>
-    <script src="js/bootstrap-popover.js"></script>
-    <script src="http://twitter.github.com/bootstrap/1.4.0/bootstrap-scrollspy.js"></script>
-    <script src="http://twitter.github.com/bootstrap/1.4.0/bootstrap-tabs.js"></script>
-    <script src="http://twitter.github.com/bootstrap/1.4.0/bootstrap-buttons.js"></script>
-        <script src="http://twitter.github.com/bootstrap/1.4.0/bootstrap-dropdown.js"></script>
+	<form METHOD="GET" id="infor" name="infor" action="/gin/main">
+		<input type="hidden" id="Group_id" name="Group_id" value="{{Group_id}}"/>
+		<input type="hidden" id="Handler_id" name="Handler_id" value="{{Handler_id}}"/>
+		<input type="hidden" id="Target_flag" name="Target_flag" value="{{Target_flag}}"/>
+	</form>
 
+	<link href="http://twitter.github.com/bootstrap/assets/js/google-code-prettify/prettify.css" rel="stylesheet">
+	<script src="http://twitter.github.com/bootstrap/assets/js/google-code-prettify/prettify.js"></script>
+	<script src="http://code.jquery.com/jquery-1.5.2.min.js" type="text/javascript"></script>
+	<script src="http://autobahn.tablesorter.com/jquery.tablesorter.js" type="text/javascript"></script>
+	<script src="http://www.ravenchen.com/project/js/jquery.multipleselectbox.js" type="text/javascript"></script>
+	<script type="text/javascript" src="http://www.ravenchen.com/project/js/selectboxes.js"></script>
+	<script src="http://twitter.github.com/bootstrap/1.4.0/bootstrap-modal.js"></script>
+	<script src="http://twitter.github.com/bootstrap/1.4.0/bootstrap-alerts.js"></script>
+	<script src="http://twitter.github.com/bootstrap/1.4.0/bootstrap-twipsy.js"></script>
+	<script src="http://www.ravenchen.com/project/js/bootstrap-popover.js"></script>
+	<script src="http://twitter.github.com/bootstrap/1.4.0/bootstrap-scrollspy.js"></script>
+	<script src="http://twitter.github.com/bootstrap/1.4.0/bootstrap-tabs.js"></script>
+	<script src="http://twitter.github.com/bootstrap/1.4.0/bootstrap-buttons.js"></script>
+	<script src="http://twitter.github.com/bootstrap/1.4.0/bootstrap-dropdown.js"></script>
+	<script language="javascript" type="text/javascript">
+		$(function () {
+			setTimeout("init()",50);
+		})
+		function init() {
+			sortTable();
+			// prettyPrint();
+			read_pages2();
+		}
+		function read_pages2() {
+			post_url="";
+			if(window.location.href.toString().indexOf("?")!=-1) {
+				post_url="?"+window.location.href.toString().split("?")[1]+"#";
+			}
+			//read2("groups"+post_url, "#groups_");
+			//read2("gips"+post_url, "#gips_");
+			//read2("handlers"+post_url, "#handlers_");
+			//read("message", "#message_");
+			read2("message"+post_url, "#message_");
+		}
+		function read2(name, target) {
+			var d = new Date()
+			$.ajax({
+				url: name + "?" + d.getTime(),
+				cache: false,
+				dataType: "text",
+				success: function (data) {
+					$(target).html(data);
+					if (name.indexOf("message")!=-1) {
+						load = true;
+						message_start();
+						init_select_sort();
+						init_ul_sort();
+						init_ul_css();
+						set_option();
+						init_forms();
+					}
+				},
+				error: function () {
+					// TODO some error handling
+				}
+			});
+		}
+		function reload_page(tar) {
+			window.location.href=window.location.href;
+		}
+		function error_message(message) {
+			alert(message);
+		}
+		/*** eg 
+		ajax_call("this_is_the_url?para1=value1&para2=value2&para...", call_back_function_name_after_retrieve_data_from_server,call_back_function_parameters)
+		Notes: you can only pass one parameter, if you have more information to pass, you should combine them into one parameter and parse it later in the call back function
+		**/
+		function ajax_call(url_,fun,para) {
+			$.ajax({
+				url: url_,
+				success: function(msg){
+					fun(para);
+				},
+				error: function(){
+					alert('failure url request: {url:'+url_+" , function name:"+fun.name+"}");
+				}
+			});
+		}
+		/** message functions**/
+		function info_submit() {
+			document.forms["infor"].submit();
+		}
+/** end**/
+	</script>
 
+	<link href="http://www.ravenchen.com/project/main.css" rel="Stylesheet"" />
 
-        <script language="javascript" type="text/javascript">
-            $(function () {
-                sortTable();
-                // prettyPrint();
-                read_pages();
+	<!-- Le fav and touch icons -->
+	<link rel="shortcut icon" href="images/favicon.ico">
+	<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+</head>
 
-            })
-        </script>
-<link href="css/main.css" rel="Stylesheet"" />
+<body>
+	<div class="topbar-wrapper">
+		<div id="Div1" class="topbar" data-dropdown="dropdown">
+			<div class="topbar-inner">
+				<div class="container">
+					<h3 style="margin:0px;padding:0px;" class="brand"><a href="#" style="padding-left:0px;padding-right:0px;">Welcome ,</a></h3>
+					<ul> <li><a href="#"  style="padding-left:4px;padding-right:4px;"> Vincent </a> </li> </ul>
+					<ul class="nav secondary-nav">
+						<li class="menu">
+							<a href="#" class="menu">Account</a>
+							<ul class="menu-dropdown">
+								<li><a href="#" data-controls-modal="my-modal1" data-backdrop="static">Account Settings</a></li>
+								<li class="divider"></li>
+								<li><a href="index.html">Sign out</a></li>
+							</ul>
+						</li>
+						<li class="menu">
+							<a href="#" class="menu">Manage</a>
+							<ul class="menu-dropdown">
+								<li><a href="#" title="message" onclick="javascript:switchSection(this.title);">Messages</a></li>
+								<li><a href="#" title="groups" onclick="javascript:switchSection(this.title);">Groups</a></li>
+								<li><a href="#" title="gips" onclick="javascript:switchSection(this.title);">Gips</a></li>
+								<li><a href="#" title="handlers" onclick="javascript:switchSection(this.title);">Handler/Admin</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
 
-    <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="images/favicon.ico">
-    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
-  </head>
+	<div align="center">
+		<div id="message">
+			<div class="container">
+				<div class="content" >
+					<div id="message_" align="left"></div>
+				</div>
+			</div>
+		</div>
 
-  <body>
-    <div class="topbar-wrapper">
-            <div id="Div1" class="topbar" data-dropdown="dropdown">
+		<div id="groups"  style="display:none;">
+			<div class="container">
+				<div class="content">
+					<div id="groups_"  align="left"></div>
+				</div>
+			</div>
+		</div>
 
-              <div class="topbar-inner">
-              
-                <div class="container">
-                  <h3 style="margin:0px;padding:0px;" class="brand"><a href="#" style="padding-left:0px;padding-right:0px;">Welcome ,</a></h3>
-                  <ul>
-                    <li><a href="#"  style="padding-left:4px;padding-right:4px;">Vincent</a></li>
-                  </ul>
-                 
-                  <ul class="nav secondary-nav">
-                    <li class="menu">
-                      <a href="#" class="menu">Account</a>
-                      <ul class="menu-dropdown">
-                        <li><a href="#" data-controls-modal="my-modal1" data-backdrop="static">Account Settings</a></li>
-                        <li class="divider"></li>
-                        <li><a href="index.html">Sign out</a></li>
-                      </ul>
-                    </li>
-                    <li class="menu">
-                      <a href="#" class="menu">Manage</a>
-                      <ul class="menu-dropdown">
-                        <li><a href="#" title="message" onclick="javascript:switchSection(this.title);">Messages</a></li>
-                        <li><a href="#" title="groups" onclick="javascript:switchSection(this.title);">Groups</a></li>
-                        <li><a href="#" title="gips" onclick="javascript:switchSection(this.title);">Gips</a></li>
-                        <li><a href="#" title="handlers" onclick="javascript:switchSection(this.title);">Handler/Admin</a></li>
-                      </ul>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div align="center">
-          <div id="message">
-          <div class="container">
-           <div class="content" >
-           <div id="message_" align="left"></div>
-           </div>
-           </div>
-           </div>
+		<div id="gips"  style="display:none;">
+			<div class="container">
+				<div class="content">
+					<div id="gips_"  align="left"></div>
+				</div>
+			</div>
+		</div>
 
-            <div id="groups"  style="display:none;">
-          <div class="container">
-           <div class="content">
-           <div id="groups_"  align="left"></div>
-           </div>
-           </div>
-           </div>
-            <div id="gips"  style="display:none;">
-          <div class="container">
-           <div class="content">
-          <div id="gips_"  align="left"></div>
-           </div>
-           </div>
-           </div>
-            <div id="handlers"  style="display:none;">
-          <div class="container">
-           <div class="content">
-          <div id="handlers_"  align="left"></div>
-           </div>
-           </div>
-           </div>
-           </div>
- 
- <br />
-    <div align="center">
-        <p>&copy; The Sentine Project for Genocide Prevention</p>
-      </div>
-     <div style="z-index:3;position:absolute;bottom:0px;right:-5px;padding:10px;min-height:15px;padding-top:5px;padding-bottom:5px; color:Gray;" class="special">Loading... </div>
-  </body>
+		<div id="handlers"  style="display:none;">
+			<div class="container">
+				<div class="content">
+					<div id="handlers_"  align="left"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<br />
+	<div align="center">
+		<p>&copy; The Sentine Project for Genocide Prevention</p>
+	</div>
+	<div style="z-index:3;position:absolute;bottom:0px;right:-5px;padding:10px;min-height:15px;padding-top:5px;padding-bottom:5px; color:Gray;" class="special">Loading... </div>
+</body>
+
 </html>
+

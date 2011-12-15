@@ -1,176 +1,252 @@
 <html>
-  <body>
-<ul class="tabs"  data-tabs="tabs" >
-  <li class="active">
-    <a href="#Messages">Messages</a>
-  </li>
-  <li>
-    <a href="#Notifications">Notifications</a>
-  </li>
+<body>
+	<ul class="tabs"	data-tabs="tabs" >
+		<li class="active"> <a href="#Messages">Messages</a> </li>
+		<li> <a href="#Notifications">Notifications</a> </li>
+	</ul>
 
-</ul>
-   
+	<div class="pill-content">
+		<div class="active" id="Messages">
+			<div>
+				<div class="input pull-left" style="padding-left:15px;margin-top:1px;">
+					<select class="normal" name="normalSelect" id="group_select">
+						{% if group %}
+							{% for element in group %}
+								{% ifchanged %}
+									<option value="{{element.id}}">{{element.name}}</option>
+								{%endifchanged%}
+							{% endfor %}
+						{% endif %}
+					</select>
+				</div>
 
-<div class="pill-content">
-  <div class="active" id="Messages">
-  <div>
-     <div class="input pull-left" style="padding-left:15px;margin-top:1px;">
-              <select class="normal" name="normalSelect" id="group_select">
-             {% if group %}{% for element in group %}
-{% ifchanged %}
-<option value="{{element.id}}">{{element.name}}</option>
- {%endifchanged%}{% endfor %}{% endif %}
-               
-              </select>
-            </div>
-            <div class="input pull-right" style="padding:-right:15px;">
-               <select class="medium" name="mediumSelect" id="status">
-                <option value="Unprocessed">Unprocessed</option>
-                <option value="Processed">Processed</option>
-                <option value="Rejected">Rejected</option>
-              </select>&nbsp;
-                <select class="medium" name="mediumSelect" id="mark_by">
-                <option value="Marked by">Marked by</option>
-                 <option value="Unprocessed">Unprocessed</option>
-                <option value="Processed">Processed</option>
-                <option value="Rejected">Rejected</option>
-              </select>&nbsp;&nbsp;&nbsp;
-               <input class="input-small" type="text" style="width:180px;" placeholder="Search messages" onkeyup="search_message(this.value);" />&nbsp;<button class="btn info" type="submit" style="padding:1px;margin:1px;"><img src="" title="Search" style="width:15px;"/></button>
-            </div>
-    </div>
-      <div style="clear:left;">
-      <br />
-    <table  class="zebra-striped" id="sortTableExample">
-        <thead>
-          <tr>
-            <th style="width:20px;"></th>
-            <th>Message</th>
-            <th style="width:70px;">Gip</th>
-            <th style="width:100px;">Date</th>
-            <th style="width:70px;">Priority</th>
-          </tr>
-        </thead>
-        <tbody>
-        
-         {% if message %}{% for element in message %}
-{% ifchanged %}
-<tr id="m_{{element.id}}">
-<td><input type="checkbox" id="m_{{element.id}}_c" /></td>
-<script language="javascript" type="text/javascript">
-function set_message(info)
-{
+				<div class="input pull-right" style="padding:-right:15px;">
+					<select class="medium" name="mediumSelect" id="status">
+						<option value="Unprocessed">Unprocessed</option>
+						<option value="Processed">Processed</option>
+						<option value="Rejected">Rejected</option>
+					</select>;
 
- info_holder=info.split('|');
- $('#message_self').html(info_holder[1]+"<br><br><br><br><br><br><br><br><br><br>");
- $('#message_additional_information').html("test");
-}
-</script>
- <td name="single_message">
-          <div style="height:19px; overflow:hidden;" title="Detail" rel="popover" data-content="Click to view details"><a href="javascript:void(0);" data-controls-modal="message_detail" data-backdrop="static" onclick="set_message('{{element.id}}|{{element.message}}|{{element.datetime_sent}}|{{element.contact_medium_id}}|{{element.flag}}');">{{element.message}}</a></div>
-          </td>
-          <td>{{element.contact_medium_id}}</td>
-          <td>{{element.datetime_sent}}</td>
-          <td><a id="m_s_{{element.id}}" href="javascript:switch_priority('m_s_{{element.id}}');" class="{% ifequal element.flag 0%}label{%endifequal%}{% ifequal element.flag 1%}label warning{%endifequal%}{% ifequal element.flag 2%}label important{%endifequal%}" style="color:White;" ><font style='display:none;'>{{element.flag}}</font>{% ifequal element.flag 0%}Low{%endifequal%}{% ifequal element.flag 1%}Medium{%endifequal%}{% ifequal element.flag 2%}High{%endifequal%}</a></td>
-</tr>
- {%endifchanged%}{% endfor %}{% endif %}
- 
+					<select class="medium" name="mediumSelect" id="mark_by">
+						<option value="Marked by">Marked by</option>
+						<option value="Unprocessed">Unprocessed</option>
+						<option value="Processed">Processed</option>
+						<option value="Rejected">Rejected</option>
+					</select>;
+				
+					<input class="input-small" type="text" style="width:180px;" placeholder="Search messages" onkeyup="search_message(this.value);" />
+					<button class="btn info" type="submit" style="padding:1px;margin:1px;">
+						<img src="" title="Search" style="width:15px;"/>
+					</button>
+				</div>
+			</div>
 
- 
- 
+			<div style="clear:left;">
+				<br />
+				<table  class="zebra-striped" id="sortTableExample">
+					<thead>
+						<tr>
+							<th style="width:20px;"></th>
+							<th>Message</th>
+							<th style="width:70px;">Gip</th>
+							<th style="width:100px;">Date</th>
+							<th style="width:70px;">Priority</th>
+						</tr>
+					</thead>
+					<tbody>
+					{% if message %}
+						{% for element in message %}
+							{% ifchanged %}
+								<tr id="m_{{element.id}}">
+									<td> <input type="checkbox" id="m_{{element.id}}_c" /> </td>
 
-        </tbody>
-      </table>
-      </div>
-    
-        </div>
-  <div id="Notifications">
-  <table  class="zebra-striped" id="notification_table">
-  <thead>
-  <tr>
-  <th>Messages</th>
-  <th style="width:80px;">Date</th>
-  <th style="width:40px;"></th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr onmouseout="$('#delete_0').hide();" onmouseover="$('#delete_0').show();" >
-  <td>sdf sdf ssdf dssddsfds sf sdf ds fdsf ds sdf sfds fds ds s</td><td>2010-09-09</td><td><a name="delete_" href="#" style="color:Gray;display:none;" id="delete_0">x</a></td>
-  </tr>
-    <tr   onmouseout="$('#delete_1').hide();" onmouseover="$('#delete_1').show();">
-  <td>sdf sdf ssdf dssddsfds sf sdf ds fdsf ds sdf sfds fds ds s</td><td>2010-09-08</td><td><a name="delete_" href="#" style="color:Gray;display:none;" id="delete_1"><form><input type="submit" value="x" /></form></a></td>
-  </tr>
-  </tbody>
-  </table>
+									<!-- Why is there javascript here? -->
+									<script language="javascript" type="text/javascript">
+										function set_message(info) {
+											info_holder=info.split('|');
+											$('#message_self').html(info_holder[1]+"<br><br><br><br><br><br><br><br><br><br>");
+											$('#message_additional_information').html("test");
+										}
+									</script>
 
+									<td name="single_message">
+										<div style="height:19px; overflow:hidden;" title="Detail" rel="popover" data-content="Click to view details">
+											<a href="javascript:void(0);" data-controls-modal="message_detail" data-backdrop="static" onclick="set_message('{{element.id}}|{{element.message}}|{{element.datetime_sent}}|{{element.contact_medium_id}}|{{element.flag}}');"> {{element.message} }</a>
+										</div>
+									</td>
+									<td>{{element.contact_medium_id}}</td>
+									<td>{{element.datetime_sent}}</td>
+									<td> 
+										<a id="m_s_{{element.id}}" href="javascript:switch_priority('m_s_{{element.id}}');" class="{% ifequal element.flag 0%}label{%endifequal%}{% ifequal element.flag 1%}label warning{%endifequal%}{% ifequal element.flag 2%}label important{%endifequal%}" style="color:White;" >
+											<font style='display:none;'> {{element.flag}} </font>
+											{% ifequal element.flag 0%}Low{%endifequal%}
+											{% ifequal element.flag 1%}Medium{%endifequal%}
+											{% ifequal element.flag 2%}High{%endifequal%}
+										</a>
+									</td>
+								</tr>
+							{%endifchanged%}
+						{% endfor %}
+					{% endif %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div id="Notifications">
+			<table  class="zebra-striped" id="notification_table">
+				<thead>
+					<tr>
+						<th>Messages</th>
+						<th style="width:80px;">Date</th>
+						<th style="width:40px;"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr onmouseout="$('#delete_0').hide();" onmouseover="$('#delete_0').show();" >
+						<td>sdf sdf ssdf dssddsfds sf sdf ds fdsf ds sdf sfds fds ds s</td>
+						<td>2010-09-09</td>
+						<td>
+							<a name="delete_" href="#" style="color:Gray;display:none;" id="delete_0"> x </a> 
+						</td>
+					</tr>
+					<tr   onmouseout="$('#delete_1').hide();" onmouseover="$('#delete_1').show();">
+						<td>sdf sdf ssdf dssddsfds sf sdf ds fdsf ds sdf sfds fds ds s</td>
+						<td>2010-09-08</td>
+						<td>
+							<a name="delete_" href="#" style="color:Gray;display:none;" id="delete_1">
+								<form>
+									<input type="submit" value="x" /> 
+								</form>
+							</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
 
-  </div>
-    </div>
-     <div id="password_modification"  class="modal hide fade minHeight">
-      <div class="modal-header">
-              <a href="#" class="close">&times;</a>
-              <h3>Password Modification</h3>
-            </div>
-             <div class="modal-body">
-             <div>Current password: </div><input type="password"  class="xlarge" name="xlInput" value="thisis@value.com" style="color:#666;"/><br /><br /><br />
+	<div id="password_modification"  class="modal hide fade minHeight">
+		<div class="modal-header">
+			<a href="#" class="close">&times;</a>
+			<h3>Password Modification</h3>
+		</div>
+		<div class="modal-body">
+			<div>Current password: </div>
+			<input type="password"  class="xlarge" name="xlInput" value="thisis@value.com" style="color:#666;"/>
+			<br />
+			<br />
+			<br />
 
-             <div>New password: </div><input type="password"  class="xlarge" name="xlInput" value="thisis@value.com" style="color:#666;"/><br /><br />
-             <div>Confirm new password:</div><input type="password"  class="xlarge" name="xlInput" value="thisis@value.com" style="color:#666;"/><br />
-             </div>
-              <div class="modal-footer">
-                            <a href="javascript:$('#password_modification').modal('toggle');" class="btn secondary">Cancel</a>
-               <a href="javascript:$('#password_modification').modal('toggle');" class="btn primary">Save</a>
-              </div>
-     </div>
-      <div id="my-modal1" class="modal hide fade minHeight">
-            <div class="modal-header">
-              <a href="#" class="close">&times;</a>
-              <h3>Account Setting</h3>
-            </div>
-            <div class="modal-body">
-            <div> User name:</div> <input type="text"  name="disabledInput" disabled="disabled" class="xlarge disabled" placeholder="this is name"/><br /><br />
+			<div>New password: </div><input type="password"  class="xlarge" name="xlInput" value="thisis@value.com" style="color:#666;"/>
+			<br />
+			<br />
 
-            <div> First name:</div> <input type="text"  name="disabledInput" disabled="disabled" class="xlarge disabled"value="first name" style="color:#666;"/><br /><br />
-            <div> Last name:</div> <input type="text"   name="disabledInput" disabled="disabled" class="xlarge disabled" value="last name" style="color:#666;"/><br /><br />
+			<div>Confirm new password:</div>
+			<input type="password"  class="xlarge" name="xlInput" value="thisis@value.com" style="color:#666;"/>
+			<br />
+			   </div>
+				<div class="modal-footer">
+							  <a href="javascript:$('#password_modification').modal('toggle');" class="btn secondary">Cancel</a>
+				 <a href="javascript:$('#password_modification').modal('toggle');" class="btn primary">Save</a>
+				</div>
+		</div>
 
-            <div> Location:</div> <input type="text"  class="xlarge" name="xlInput" value="thisis value" style="color:#666;"/><br /><br />
-            
+		<div id="my-modal1" class="modal hide fade minHeight">
+			<div class="modal-header">
+				<a href="#" class="close">&times;</a>
+				<h3>Account Setting</h3>
+			</div>
+			<div class="modal-body">
+				<div> User name:</div>
+				<input type="text"  name="disabledInput" disabled="disabled" class="xlarge disabled" placeholder="this is name"/><br /><br />
 
-            <div> Email:</div> <input type="text"  class="xlarge" name="xlInput" value="thisis@value.com" style="color:#666;"/><br /><br />
+				<div> First name:</div> 
+				<input type="text"  name="disabledInput" disabled="disabled" class="xlarge disabled"value="first name" style="color:#666;"/><br /><br />
+				<div> Last name:</div> 
+				<input type="text"   name="disabledInput" disabled="disabled" class="xlarge disabled" value="last name" style="color:#666;"/><br /><br />
 
-              <div>Phone number:</div> 
-              <input type="text"  class="xlarge" name="xlInput" value="123456789" style="color:#666;margin-bottom:5px;"/>&nbsp;(Primary)<br />
-              <input type="text"  class="xlarge" name="xlInput" value="123456789" style="color:#666;margin-bottom:5px;" /><br />
-              <input type="text"  class="xlarge" name="xlInput" value="123456789" style="color:#666;margin-bottom:5px;" /><br /><br />
-            <div class="pull-right"><a href="#" data-controls-modal="password_modification" data-backdrop="static">Click to change password</a><br /></div>
-             <span>Role: Administrator<br /></span>
-            </div>
-            <div class="modal-footer">
-             <a href="#" onclick="$('#my-modal1').modal('toggle');" class="btn secondary">Cancel</a>
-              <a href="#" onclick="$('#my-modal1').modal('toggle');" class="btn primary ">Save</a><br />
-              <span class="shadow_ " >Account Created: Oct 20, 2011<br />
-              Last Login: Nov 8, 2011</span>
-            </div>
-      </div>
-      <div class="modal hide fade minHeight" id="message_detail">
-       <div class="modal-header"> 
-       <a href="#" class="close">&times;</a>
-              <h3>Message detail</h3></div>
-       <div class="modal-body" style="max-height:200px;overflow:auto;" id="message_self">Here is the meesage Here is the meesage Here is the meesage Here is the meesage Here is the meesage Here is the meesage Here is the meesage Here is the meesage Here is the meesage Here is the meesage Here is the meesage 
-       Here is the meesage Here is the meesage Here is the meesage Here is the meesage Here is the meesage 
-Here is the meesage Here is the mee<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />sage Here is the meesage Here is the meesage 
-       Here is the meesage Here is the meesage Here is the meesage Here is the meesage Here is the meesage
-       <hr /> 
-       <div class="pull-right" id="message_additional_information"><div>Additional information<br />Additional information<br />Additional information</div></div>
-       </div>
-       <div class="modal-footer">
-       <div>
-       Reply:
-       <textarea rows="6" style="width:100%;"></textarea>
-       </div>
-       <br />
-       <button class="btn">Cancel</button>
-       <button class="btn info">Send</button>
-       </div>
-      </div>
-  </body>
+				<div> Location:</div>
+				<input type="text"  class="xlarge" name="xlInput" value="thisis value" style="color:#666;"/><br /><br />
+
+				<div> Email:</div>
+				<input type="text"  class="xlarge" name="xlInput" value="thisis@value.com" style="color:#666;"/><br /><br />
+
+				<div>Phone number:</div> 
+				<input type="text"  class="xlarge" name="xlInput" value="123456789" style="color:#666;margin-bottom:5px;"/>&nbsp;(Primary)<br />
+				<input type="text"  class="xlarge" name="xlInput" value="123456789" style="color:#666;margin-bottom:5px;" /><br />
+				<input type="text"  class="xlarge" name="xlInput" value="123456789" style="color:#666;margin-bottom:5px;" /><br /><br />
+
+				<div class="pull-right">
+					<a href="#" data-controls-modal="password_modification" data-backdrop="static">Click to change password</a><br />
+				</div>
+
+				<span>Role: Administrator<br /></span>
+			</div>
+			<div class="modal-footer">
+				<a href="#" onclick="$('#my-modal1').modal('toggle');" class="btn secondary">Cancel</a>
+				<a href="#" onclick="$('#my-modal1').modal('toggle');" class="btn primary ">Save</a><br />
+				<span class="shadow_ " >
+					Account Created: Oct 20, 2011
+					<br />
+					Last Login: Nov 8, 2011
+				</span>
+			</div>
+		</div>
+
+		<div class="modal hide fade minHeight" id="message_detail">
+			<div class="modal-header"> 
+			<a href="#" class="close">&times;</a>
+			<h3>Message detail</h3>
+		</div>
+
+		<div class="modal-body" style="max-height:200px;overflow:auto;" id="message_self">
+			Here is the meesage 
+			Here is the meesage 
+			Here is the meesage 
+			Here is the meesage 
+			Here is the meesage 
+			Here is the meesage 
+			Here is the meesage 
+			Here is the meesage 
+			Here is the meesage 
+			Here is the meesage 
+			Here is the meesage 
+			Here is the meesage 
+			Here is the meesage 
+			Here is the meesage 
+			Here is the meesage 
+			Here is the meesage 
+			Here is the meesage 
+			Here is the message
+			<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+			Here is the meesage 
+			Here is the meesage 
+			Here is the meesage 
+			Here is the meesage 
+			Here is the meesage 
+			Here is the meesage 
+			Here is the meesage
+		
+			<div class="pull-right" id="message_additional_information">
+				<div>
+					Additional information 
+					<br />
+					Additional information
+					<br />
+					Additional information
+				</div>
+			</div>
+		</div>
+
+		<div class="modal-footer">
+			<div>
+				Reply:
+				<textarea rows="6" style="width:100%;"></textarea>
+			</div>
+			<br />
+			<button class="btn">Cancel</button>
+			<button class="btn info">Send</button>
+		</div>
+	</div>
+</body>
 </html>
