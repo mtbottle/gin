@@ -31,9 +31,10 @@ class Group(models.Model):
 	''' class of group objects '''
 	name = models.CharField(max_length=100)
 	location = models.TextField()
+	description = models.TextField()
 
 	def __unicode__(self):
-		return "Group : (name: %s, location: %s)" % (self.name, self.location)
+		return "Group : %d (name: %s, location: %s)" % (self.id, self.name, self.location)
 
 class GIP(models.Model):
 	''' ground information person (?) '''
@@ -149,7 +150,7 @@ class GIPGroups(models.Model):
 
 	def __unicode__(self):
 		''' TODO Find a better way to format this information '''
-		return "GIP %d belongs to group %d" % (self.gip_ref, self.group_ref)
+		return "GIP %d belongs to group %d" % (self.gip_ref_id, self.group_ref_id)
 
 class SystemAdmin(models.Model):
 	''' Specifies which handler is a system admin. There can only be one... per handler '''

@@ -9,9 +9,9 @@ urlpatterns = patterns('',
     (r'^gin/message','gin.gin_backend.views.message'),
     (r'^gin/handlers','gin.gin_backend.views.message'),
     (r'^gin/gips','gin.gin_backend.views.message'),
-    (r'^gin/groups','gin.gin_backend.views.post_groups'),
+    (r'^gin/groups/$','gin.gin_backend.views.post_add_new_group'),
     (r'^gin/main','gin.gin_backend.views.index'),
-    (r'^gin/', 'gin.gin_backend.views.index'),
+    (r'^gin/', 'gin.gin_backend.views.get_handler_messages'),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # (r'^admin/doc/', include('django.contrib.admindocs.urls')),

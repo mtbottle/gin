@@ -2,6 +2,9 @@
 from models import *
 from django.db import transaction
 
+# import a way to extend lists/queryset into lists
+from itertools import chain
+
 # HANDLER functions
 def get_handler(handler_id):
 	''' Given:  handler_id -      int
@@ -56,12 +59,30 @@ def add_new_GIP():
 	gip.save()
 	return gip
 	
+
+def get_groups_of_handler(handler_id):
+	''' Given a handler_id, return a list of group ids of which the handler belongs to '''
+	# extract all the Handler/Group references
+	handler = Handler.objects.get(id = handler_id)
+	refs = HandlersGroups.objects.filter(handler_ref = handler)
+
+	ref_ids = map( lambda x: x.id, refs )
+
+	handler_groups = []
+
+	# extract the groups that have group_ref in refs
+	for ref_id in ref_ids:
+		handler_group = Group.objects.get(id = ref_id)
+		handler_groups.append(handler_group)
+
+	return handler_groups
+	
 #####
 
 # HEAD OFFICE functions
 def create_admin(handler_id):
-	''' Given:  handler_id -        int
-			Return a new system admin object that references object at handler_id '''
+	''' Given:  handler_id (int)
+		Return a new system admin object that references object at handler_id '''
 	handler = Handler.objects.get(id = handler_id)
 
 	try:
@@ -72,9 +93,8 @@ def create_admin(handler_id):
 	return sys_admin
 
 def add_new_handler(n, loc):
-	''' Given:  n -                 string
-							loc -               string
-			Return a new handler django object with name n and location loc'''
+	''' Given:  n  (string), loc (string)
+		Return a new handler django object with name n and location loc'''
 	try:
 		handler = Handler(name=n, location=loc)
 		handler.save()
@@ -112,15 +132,16 @@ def move_handler_to_group(handler_id, group_id):
 def message_group_handlers(request):
 	''' TODO:  I don't think this needs to be a backend/database thing? Perhaps send out message given a message... sendmail?'''
 	pass
+
 	
 #####
 
 # SYSTEM ADMIN functions
-def create_group(n, loc):
+def create_group(n, loc, d):
 	''' Given a name, n, and location, loc, create a group with those attributes and save it in the database. Return the django group object '''
-	g = Group(name=n, location=loc)
+	g = Group(name=n, location=loc, description=d)
 	g.save()
-	return g
+	return g.id
 	
 def delete_group(group_id):
 	''' Perhaps we should be matching with name/location instead? 
@@ -188,7 +209,7 @@ def edit_location(group_id, loc):
 	group.location = loc
 	group.save()
 
-def edit_description(group_id, n):
+def edit_group_description(group_id, n):
 	''' Given a description (name), update the description of the group object with
 			the given group id '''
 	group = Group.objects.get(id = group_id)
@@ -213,35 +234,19 @@ def delete_handler_from_group(handler, group):
 			handler belongs to the group. '''
 	HandlerGroup.objects.get(handler_ref = handler, group_ref = group).delete()
 
-def get_all_GIPs_from_group(group_id):
-	''' Given a group id, return all the GIPS who are associated with the handlers as a list'''
+def get_all_gips_from_group(group_id):
+	''' Given a group id, return all the GIPS who are associated with the handlers as a QuerySet'''
 	# extract all the gips from group
 	gips_ref = GIPGroups.objects.filter(group_ref = group_id)
-	
-	# initialize list of gips
-	gips = []
 
-	# need to extract the gip object of that particular gip_ref
-	for gip in gips_ref:
-		g = gip.gip_ref
-		gips.append(g)
-
-	return gips
+	return gips_ref
 
 def get_all_handlers_from_group(group_id):
 	''' Given a group id, return all the handlers who are in the group with group_id as a list'''
 	# extract all the handlers in a particular group  
 	handlers_ref = HandlersGroups.objects.filter(group_ref = group_id)
 
-	# initialize list of handlers
-	handlers = [] 
-	
-	# need to extract the handler object of that particular handler_ref_id
-	for handler in handlers_ref:
-		h = handler.handler_ref
-		handlers.append(h)
-
-	return handlers
+	return handlers_ref
 
 
 #####
@@ -267,6 +272,10 @@ def return_handler_flagged_message(handler_id):
 	return messages
 
 # Message and tag related functions
+
+def get_all_messages():
+	''' Return all the messages in database as a QuerySet object '''
+	return Message.objects.all()
 
 def edit_entry(entry, new_data):
 	''' Edit general object details. Elements of the object to be updated are passed as a hash keyed by element name. '''
@@ -350,3 +359,42 @@ def get_tags_for_message(message_id):
 		tags.append(ref.tag_ref)
   
 	return tags
+
+def get_messages_of_gip(gip_id):
+	''' Given a gip_id, get all the messages that the gip wrote through all his contact mediums. Return a list of messages '''
+	gip = GIP.objects.get(id = gip_id)
+	
+	# get all the contact mediums that belongs to the gip
+	cms = ContactMedium.objects.filter(gip = gip)
+	
+	messages = []
+	# iterate through all contact mediums and extract all the messages
+	for cm in cms:
+		msgs = Message.objects.filter(contact_medium = cm)
+		# convert the list of messages into a proper queryset_object
+		messages = list(chain(messages, msgs))
+
+	return messages
+
+
+def get_messages_of_group(group_id):
+	''' Given a group_id, get the messages that belong to the group by going through all the gips and extracting the messages that belongs to the gips '''
+	group = Group.objects.get(id = group_id)
+	print group
+
+	# get all the gips that belongs to that group
+	gip_relations = GIPGroups.objects.filter(group_ref = group)
+	print GIPGroups.objects.all()
+	gips = map( lambda x: GIP.objects.get(id = x.gip_ref_id), gip_relations)
+
+	print gip_relations
+
+	messages = []
+	# now get all the messages of each gip and get their messages
+	for gip in gips:
+		msgs = get_messages_of_gip(gip.id)
+		messages = list(chain(messages, msgs))
+
+	return messages
+
+
